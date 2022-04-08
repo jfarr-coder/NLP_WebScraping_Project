@@ -2,11 +2,11 @@ import requests
 from htmldate import find_date
 from bs4 import BeautifulSoup
 import pandas as pd
-import html2text
+#import html2text
 #import nltk
 
 if __name__=="__main__":
-    data=pd.read_csv('NLP_Project_Raw_Data_Complete.csv')
+    data=pd.read_csv('NLP_Project_Raw_Data_Incomplete.csv')
     #date = find_date('https://globalnews.ca/news/8453515/omicron-covid-variant-explained/')
     #print(date)
     #r.encode('utf-8')
@@ -28,7 +28,7 @@ if __name__=="__main__":
 
     data['Date'] = dates
     #data['Full Text'] = ftexts
-    #data.to_csv('NLP_Project_Raw_Data_Complete.csv')
+    data.to_csv('NLP_Project_Raw_Data_Incomplete.csv')
     
     
     #print(r.text)
