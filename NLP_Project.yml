@@ -20,6 +20,8 @@ dependencies:
   - ld_impl_linux-64=2.35.1=h7274673_9
   - libffi=3.3=he6710b0_2
   - libgcc-ng=9.3.0=h5101ec6_17
+  - libgfortran-ng=7.5.0=ha8ba4b0_17
+  - libgfortran4=7.5.0=ha8ba4b0_17
   - libgomp=9.3.0=h5101ec6_17
   - libstdcxx-ng=9.3.0=hd4cf53a_17
   - mkl=2021.4.0=h06a4308_640
@@ -43,10 +45,13 @@ dependencies:
   - python-dateutil=2.8.2=pyhd3eb1b0_0
   - readline=8.1.2=h7f8727e_1
   - requests=2.27.1=pyhd3eb1b0_0
+  - scikit-learn=1.0.2=py39h51133e4_1
+  - scipy=1.7.3=py39hc147768_0
   - setuptools=58.0.4=py39h06a4308_0
   - six=1.16.0=pyhd3eb1b0_1
   - soupsieve=2.3.1=pyhd3eb1b0_0
   - sqlite=3.37.2=hc218d9a_0
+  - threadpoolctl=2.2.0=pyh0d69192_0
   - tk=8.6.11=h1ccaba5_0
   - tqdm=4.63.0=pyhd3eb1b0_0
   - urllib3=1.26.8=pyhd3eb1b0_0
