@@ -10,6 +10,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 #https://towardsdatascience.com/machine-learning-nlp-text-classification-using-scikit-learn-python-and-nltk-c52b92a7c73a
+
 def getLabelsFeatures(dataframe):
     label_names = ['Complete','Incomplete']
     label = dataframe['C/I']
@@ -49,7 +50,7 @@ if __name__=="__main__":
     Incomplete = pd.read_csv('NLP_Project_Raw_Data_Incomplete.csv').dropna()
 
     all_data = pd.concat([complete, Incomplete], axis=0).drop('Answer Portions',axis=1)
-    #print(all_data)
+    print(all_data)
     label_names = ['Complete','Incomplete']
     labels = all_data['C/I']
     feature_names = ['Headline','C/I']
@@ -61,10 +62,10 @@ if __name__=="__main__":
                                                           random_state=42)
     
 
-    print(train)
-    print(train_labels)
-    print(test)
-    print(test_labels)
+    #print(train)
+    #print(train_labels)
+    #print(test)
+    #print(test_labels)
 
     #TfidfVectorizer= TfidfVectorizer()
     #count_vect = CountVectorizer()
