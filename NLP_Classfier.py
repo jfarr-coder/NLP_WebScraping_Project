@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
-#import html2text
 import nltk
 import sklearn
+from sklearn import svm
+from sklearn import tree
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -11,6 +12,13 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import LinearSVC
 from nltk.classify.scikitlearn import SklearnClassifier
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize, sent_tokenize
+
+
+#nltk.download('stopwords')
+#nltk.download('punkt')
+#nltk.download('averaged_perceptron_tagger')
 #https://towardsdatascience.com/machine-learning-nlp-text-classification-using-scikit-learn-python-and-nltk-c52b92a7c73a
 #https://www.nltk.org/api/nltk.classify.scikitlearn.html
 
@@ -53,14 +61,20 @@ if __name__=="__main__":
     Incomplete = pd.read_csv('NLP_Project_Raw_Data_Incomplete.csv').dropna()
 
     all_data = pd.concat([complete, Incomplete], axis=0).drop('Answer Portions',axis=1)
-    print(all_data)
+    #print(all_data)
     label_names = ['Complete','Incomplete']
     labels = all_data['C/I']
     feature_names = ['Headline'] # POS Tag
     #https://www.geeksforgeeks.org/part-speech-tagging-stop-words-using-nltk-python/
     #https://stackabuse.com/python-for-nlp-parts-of-speech-tagging-and-named-entity-recognition/
     #https://www.nltk.org/book/ch05.html
-    features = all_data[feature_names]
+    stop_words = set(stopwords.words('english'))
+    features = all_data['Headline']
+    print(all_data['Headline'])
+    #for f in features:
+    #    print(f)
+    #    tokenize = sent_tokenize(f)
+    #    print(tokenize)
 
     train, test, train_labels, test_labels = train_test_split(features,
                                                           labels,
@@ -68,15 +82,15 @@ if __name__=="__main__":
                                                           random_state=42)
     
 
-    print(train)
-    print(train_labels)
+    #print(train)
+    #print(train_labels)
     #print(test)
     #print(test_labels)
 
     TfidfVectorizer= TfidfVectorizer()
     count_vect = CountVectorizer()
     X_train_counts = count_vect.fit_transform(train['Headline'])
-    print(X_train_counts.shape)
+    #print(X_train_counts.shape)
     tfidf_transformer = TfidfTransformer()
     X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts) # DO NOT USE (SVM, Decistion Trees)
     #SVM
@@ -94,6 +108,6 @@ if __name__=="__main__":
     #https://www.numpyninja.com/post/a-simple-introduction-to-decision-tree-and-support-vector-machines-svm
     #https://www.codementor.io/blog/text-classification-6mmol0q8oj
     #https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html
-    print(X_train_tfidf)
+    #print(X_train_tfidf)
     #clf = MultinomialNB().fit(X_train_tfidf, X_train_counts)
     #print(clf)

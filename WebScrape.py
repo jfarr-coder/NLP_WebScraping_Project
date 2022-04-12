@@ -2,7 +2,7 @@ import requests
 from htmldate import find_date
 from bs4 import BeautifulSoup
 import pandas as pd
-#import html2text
+import html2text
 
 def getDates(filename):
     data=pd.read_csv(filename)
