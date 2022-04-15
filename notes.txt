@@ -1,0 +1,13 @@
+get number of occurences of term in headline
+divide by total number of terms in headline
+36 tags
+F Distribution 
+Probability distribution
+Frasier
+Parse Tress
+
+Distinct Parser
+phrasal features
+Clausal Features
+propbabilities
+
