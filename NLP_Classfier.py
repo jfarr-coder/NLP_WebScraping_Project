@@ -45,8 +45,8 @@ def getDictionary():
     # open("unigrams.txt","r")
     # open("terms.txt","r")
     # file1.readlines()
-    #file1=open("unigrams.txt","r")
-    file1 =open("terms.txt","r")
+    #file1=open("./input/unigrams.txt","r")
+    file1 =open("./input/terms.txt","r")
     unigrams=[]
     for l in file1.readlines():
         unigrams.append(l.strip())
@@ -65,7 +65,7 @@ def getBigrams(data):
 
 def getPOS_Tags():
     tags=[]
-    file1=open("POS_Tags.txt","r")
+    file1=open("./input/POS_Tags.txt","r")
     for l in file1.readlines():
         tags.append(l.strip())
     return tags
