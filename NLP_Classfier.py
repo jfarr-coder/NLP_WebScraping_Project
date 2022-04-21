@@ -15,7 +15,7 @@ from sklearn.svm import LinearSVC
 from nltk.classify.scikitlearn import SklearnClassifier
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize, sent_tokenize
-
+from nltk.parse import stanford
 
 #nltk.download('stopwords')
 #nltk.download('punkt')
@@ -45,11 +45,23 @@ def getDictionary():
     # open("unigrams.txt","r")
     # open("terms.txt","r")
     # file1.readlines()
-    file1=open("terms.txt","r")
+    #file1=open("unigrams.txt","r")
+    file1 =open("terms.txt","r")
     unigrams=[]
     for l in file1.readlines():
         unigrams.append(l.strip())
     return unigrams
+
+def getBigrams(data):
+    bigrams=[]
+    original_size=len(data['Headline'])
+    for f in range(original_size):
+        s = data['Headline'][f]
+        nltk_tokens = nltk.word_tokenize(s)  	
+        terms = list(nltk.bigrams(nltk_tokens))
+        for t in terms:
+            bigrams.append(t)
+    return bigrams
 
 def getPOS_Tags():
     tags=[]
@@ -90,7 +102,7 @@ def getDates(filename):
 
 #https://www.geeksforgeeks.org/part-speech-tagging-stop-words-using-nltk-python/
 #https://www.geeksforgeeks.org/python-ways-to-remove-duplicates-from-list/
-def getTermsDataFrame(data,pos_tags,unigrams):
+def getTermsDataFrame(data,pos_tags,unigrams, bigrams):
     stop_words = set(stopwords.words('english'))
     #features = data['Headline']
     columns=[]
@@ -122,6 +134,19 @@ def getTermsDataFrame(data,pos_tags,unigrams):
             ntf = tf/terms_num
             probs.append(ntf)
         data[u]=probs
+    for b in bigrams:
+        probs=[]
+        columns.append(b)
+        for f in range(original_size):
+            s = data['Headline'][f]
+            tags,terms=tag_sentence(s)
+            nltk_tokens = nltk.word_tokenize(s)  	
+            terms = list(nltk.bigrams(nltk_tokens))
+            terms_num=len(terms) 
+            tf = terms.count(b)
+            ntf = tf/terms_num
+            probs.append(ntf)
+        data[b]=probs
     #all_terms = list(set(all_terms))
     #for a in all_terms:
     #    print(a)
@@ -148,5 +173,5 @@ if __name__=="__main__":
     #https://www.nltk.org/book/ch05.html
 
     #print(getDictionary())
-    terms_df = getTermsDataFrame(all_data,getPOS_Tags(),getDictionary())
-    print(terms_df)
+    terms_df = getTermsDataFrame(all_data,getPOS_Tags(),getDictionary(),getBigrams(all_data))
+    #terms_df.to_csv("results.csv")
