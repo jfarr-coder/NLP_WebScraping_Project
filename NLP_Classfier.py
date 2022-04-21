@@ -16,6 +16,7 @@ from nltk.classify.scikitlearn import SklearnClassifier
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.parse import stanford
+import stanza
 
 #nltk.download('stopwords')
 #nltk.download('punkt')
@@ -173,5 +174,8 @@ if __name__=="__main__":
     #https://www.nltk.org/book/ch05.html
 
     #print(getDictionary())
-    terms_df = getTermsDataFrame(all_data,getPOS_Tags(),getDictionary(),getBigrams(all_data))
+    #terms_df = getTermsDataFrame(all_data,getPOS_Tags(),getDictionary(),getBigrams(all_data))
     #terms_df.to_csv("results.csv")
+    nlp = stanza.Pipeline('en')
+    doc = nlp("Barack Obama was born in Hawaii.  He was elected President in 2008.")
+    print(doc.entities)
