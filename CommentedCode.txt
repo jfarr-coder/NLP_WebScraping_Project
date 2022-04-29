@@ -44,3 +44,39 @@
             #tagged = nltk.pos_tag(wordsList)
             #for t in tagged:
             #    terms.append(t[1])
+    
+     #os.environ['STANFORD_PARSER'] = './stanford-parser-full-2020-11-17/stanford-parser.jar'
+    #os.environ['STANFORD_MODELS'] = './stanford-parser-full-2020-11-17/stanford-parser-4.2.0-models.jar'
+    #parser = stanford.StanfordParser(model_path="edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz")
+    #sentences = list(parser.raw_parse_sents(("Hello, My name is Melroy.", "What is your name?")))
+    #sentences = parser.raw_parse_sents("Hello, My name is Melroy.") 
+    #sentences.pennPrint()
+    #print(sentences)#sentences = parser.raw_parse_sents("Hello, My name is Melroy.") 
+
+    #dep_parser = CoreNLPDependencyParser(url='http://localhost:9001')
+    #STANFORD = os.path.join(".", "stanford-corenlp-4.4.0")
+
+    # Create the server
+    #server = CoreNLPServer(
+    #    os.path.join(STANFORD, "stanford-corenlp-4.4.0.jar"),
+    #    os.path.join(STANFORD, "stanford-corenlp-4.4.0-models.jar"),
+    #)
+
+    # Start the server in the background
+    #server.start()
+    #parser = CoreNLPParser()
+    #parse = next(parser.raw_parse("I put the book in the box on the table."))
+
+    #parse = dep_parser.raw_parse("I put the book in the box on the table.")
+    #sd = StanfordDependencies.get_instance(backend='jpype')
+    #sent = sd.convert_trees(str(parse))
+    #for token in sent:
+    #    print(token)
+https://www.khalidalnajjar.com/setup-use-stanford-corenlp-server-python/
+    #for node in sent:
+    #    print('{}({}-{},{}-{})'.format(
+    #        node.deprel,
+    #        converted_tree[node.head - 1].form if node.head != 0 else 'ROOT',
+    #        node.head,
+    #        node.form,
+    #        node.index))

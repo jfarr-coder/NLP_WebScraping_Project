@@ -3,6 +3,7 @@ import pandas as pd
 import nltk
 import sklearn
 import requests
+import os
 from sklearn import svm
 from sklearn import tree
 from sklearn.model_selection import train_test_split
@@ -16,7 +17,13 @@ from nltk.classify.scikitlearn import SklearnClassifier
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.parse import stanford
+from nltk.parse.corenlp import CoreNLPServer
+from nltk.parse.corenlp import CoreNLPParser
+from nltk.parse.corenlp import CoreNLPDependencyParser
 import stanza
+import StanfordDependencies
+from pprint import pprint
+from pycorenlp.corenlp import StanfordCoreNLP
 
 #nltk.download('stopwords')
 #nltk.download('punkt')
@@ -176,6 +183,17 @@ if __name__=="__main__":
     #print(getDictionary())
     #terms_df = getTermsDataFrame(all_data,getPOS_Tags(),getDictionary(),getBigrams(all_data))
     #terms_df.to_csv("results.csv")
-    nlp = stanza.Pipeline('en')
-    doc = nlp("Barack Obama was born in Hawaii.  He was elected President in 2008.")
-    print(doc.entities)
+    # Run the command below in another Ubuntu Window
+    # java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -annotators "tokenize,ssplit,pos,lemma,parse,sentiment" -port 9001 -timeout 30000
+    host = "http://localhost"
+    port = "9001"
+    nlp = StanfordCoreNLP(host + ":" + port)
+    text = "Hello, My name is Melroy."
+    output = nlp.annotate(
+    text,
+    properties={
+        "outputFormat": "json",
+        "annotators": "depparse,ner,entitymentions,sentiment"
+    }
+    )
+    pprint(output)
