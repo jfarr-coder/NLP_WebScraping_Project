@@ -24,9 +24,9 @@ dependencies:
   - tqdm=4.63.0=pyhd3eb1b0_0
   - urllib3=1.26.8=pyhd3eb1b0_0
   - wheel=0.37.1=pyhd3eb1b0_0
-  - alsa-lib=1.2.3=h516909a_0
-  - pip=21.2.4=py39h06a4308_0
   - pip:
+    - alsa-lib=1.2.3=h516909a_0
+    - pip=21.2.4=py39h06a4308_0
     - libffi=3.3=he6710b0_2
     - readline=8.1.2=h7f8727e_1
     - pysocks=1.7.1=py39h06a4308_0
