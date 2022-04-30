@@ -5,7 +5,6 @@ channels:
   - defaults
 dependencies:
   - _libgcc_mutex=0.1=main
-  - alsa-lib=1.2.3=h516909a_0
   - beautifulsoup4=4.10.0=pyh06a4308_0
   - blas=1.0=mkl
   - colorama=0.4.4=pyhd3eb1b0_0
@@ -25,6 +24,8 @@ dependencies:
   - tqdm=4.63.0=pyhd3eb1b0_0
   - urllib3=1.26.8=pyhd3eb1b0_0
   - wheel=0.37.1=pyhd3eb1b0_0
+  - alsa-lib=1.2.3=h516909a_0
+  - pip=21.2.4=py39h06a4308_0
   - pip:
     - libffi=3.3=he6710b0_2
     - readline=8.1.2=h7f8727e_1
@@ -93,7 +94,6 @@ dependencies:
     - xorg-xextproto=7.3.0=h7f98852_1002
     - xorg-libxrender=0.9.10=h7f98852_1003
     - graphite2=1.3.14=h23475e2_0
-    - pip=21.2.4=py39h06a4308_0
     - mkl=2021.4.0=h06a4308_640
     - xorg-libxtst=1.2.3=h7f98852_1002
     - numpy-base=1.21.2=py39h79a1101_0
