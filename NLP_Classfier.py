@@ -3,7 +3,9 @@ import pandas as pd
 import nltk
 import sklearn
 import requests
+import re
 import os
+import json
 from sklearn import svm
 from sklearn import tree
 from sklearn.model_selection import train_test_split
@@ -23,7 +25,8 @@ from nltk.parse.corenlp import CoreNLPDependencyParser
 import stanza
 import StanfordDependencies
 from pprint import pprint
-from pycorenlp.corenlp import StanfordCoreNLP
+#from pycorenlp.corenlp import StanfordCoreNLP
+from stanfordcorenlp import StanfordCoreNLP
 
 #nltk.download('stopwords')
 #nltk.download('punkt')
@@ -31,8 +34,7 @@ from pycorenlp.corenlp import StanfordCoreNLP
 #https://towardsdatascience.com/machine-learning-nlp-text-classification-using-scikit-learn-python-and-nltk-c52b92a7c73a
 #https://www.nltk.org/api/nltk.classify.scikitlearn.html
 
-def tag_sentence(sentence):
-    tags = [] 
+def term_sentence(sentence):
     terms=[]
     tokenize = sent_tokenize(sentence)
     for i in tokenize:
@@ -42,9 +44,24 @@ def tag_sentence(sentence):
 
         tagged = nltk.pos_tag(wordsList)
         for t in tagged:
-            tags.append(t[1])
             terms.append(t[0])
-    return tags, terms
+    return terms
+
+def tag_sentence(sentence):
+    tags = [] 
+    terms=[]
+    regex=""
+    POS_Parser = getTags()
+    for t in range(len(POS_Parser)):
+        regex+=POS_Parser[t]
+        regex+="|"
+    nlp = StanfordCoreNLP('http://localhost', port=9002)
+    stanford = nlp.parse(sentence)
+    #r"ROOT|S|INTJ|NP|VP
+    tags = re.findall(regex, stanford)
+    tags.remove('')
+    nlp.close()
+    return tags
 
 def getDictionary():
     #requests.get("https://github.com/first20hours/google-10000-english/blob/master/20k.txt")
@@ -71,7 +88,7 @@ def getBigrams(data):
             bigrams.append(t)
     return bigrams
 
-def getPOS_Tags():
+def getTags():
     tags=[]
     file1=open("./input/POS_Tags.txt","r")
     for l in file1.readlines():
@@ -110,59 +127,84 @@ def getDates(filename):
 
 #https://www.geeksforgeeks.org/part-speech-tagging-stop-words-using-nltk-python/
 #https://www.geeksforgeeks.org/python-ways-to-remove-duplicates-from-list/
-def getTermsDataFrame(data,pos_tags,unigrams, bigrams):
+
+def getTagsDataFrame(data,pos_tags):
+    data2=data.copy().drop('Headline',axis=1).drop('C/I',axis=1)
     stop_words = set(stopwords.words('english'))
     #features = data['Headline']
     columns=[]
     all_terms=[]
-    columns.append('Headline')
     original_size=len(data['Headline'])
     for p in pos_tags:
         probs=[]
         columns.append(p)
         for f in range(original_size):
             s = data['Headline'][f]
-            tags,terms=tag_sentence(s)
+            tags=tag_sentence(s)
+            terms=term_sentence(s)
             terms_num=len(terms) 
             tf = tags.count(p)
             ntf = tf/terms_num
             probs.append(ntf)
             for t in terms:
                 all_terms.append(t)
-        data[p]=probs
+        data2[p]=probs
+    tags_df=data2[columns]
+    return tags_df
 
+def getTermsDataFrame(data,unigrams):
+    data2=data.copy().drop('Headline',axis=1).drop('C/I',axis=1)
+    stop_words = set(stopwords.words('english'))
+    #features = data['Headline']
+    columns=[]
+    all_terms=[]
+    #columns.append('Headline')
+    original_size=len(data['Headline'])
     for u in unigrams:
         probs=[]
         columns.append(u)
         for f in range(original_size):
             s = data['Headline'][f]
-            tags,terms=tag_sentence(s)
+            terms=term_sentence(s)
             terms_num=len(terms) 
             tf = terms.count(u)
             ntf = tf/terms_num
             probs.append(ntf)
-        data[u]=probs
+        data2[u]=probs
+    #all_terms = list(set(all_terms))
+    #for a in all_terms:
+    #    print(a)
+    #terms = list(set(terms))
+    unigrams_df=data2[columns]
+    #tags_df = pd.DataFrame(features, index =features,columns =terms)
+    return unigrams_df
+
+def getBigramsDataGrame(data,bigrams):
+    data2=data.copy().drop('Headline',axis=1).drop('C/I',axis=1)
+    stop_words = set(stopwords.words('english'))
+    #features = data['Headline']
+    columns=[]
+    all_terms=[]
+    original_size=len(data['Headline'])
     for b in bigrams:
         probs=[]
         columns.append(b)
         for f in range(original_size):
             s = data['Headline'][f]
-            tags,terms=tag_sentence(s)
+            terms=term_sentence(s)
             nltk_tokens = nltk.word_tokenize(s)  	
             terms = list(nltk.bigrams(nltk_tokens))
             terms_num=len(terms) 
             tf = terms.count(b)
             ntf = tf/terms_num
             probs.append(ntf)
-        data[b]=probs
+        data2[b]=probs
     #all_terms = list(set(all_terms))
     #for a in all_terms:
     #    print(a)
-    columns.append('C/I')
     #terms = list(set(terms))
-    features=data[columns]
-    #tags_df = pd.DataFrame(features, index =features,columns =terms)
-    return features
+    bigrams_df=data2[columns]
+    return bigrams_df
 
 if __name__=="__main__":
     complete_training,complete_testing = getData('NLP_Project_Raw_Data_Complete.csv')
@@ -175,25 +217,22 @@ if __name__=="__main__":
     #print(all_data)
     label_names = ['Complete','Incomplete']
     labels = all_data['C/I']
-    feature_names = ['Headline'] # POS Tag
+    features = all_data['Headline'] # POS Tag
     #https://www.geeksforgeeks.org/part-speech-tagging-stop-words-using-nltk-python/
     #https://stackabuse.com/python-for-nlp-parts-of-speech-tagging-and-named-entity-recognition/
     #https://www.nltk.org/book/ch05.html
 
-    #print(getDictionary())
-    #terms_df = getTermsDataFrame(all_data,getPOS_Tags(),getDictionary(),getBigrams(all_data))
-    #terms_df.to_csv("results.csv")
-    # Run the command below in another Ubuntu Window
-    # java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -annotators "tokenize,ssplit,pos,lemma,parse,sentiment" -port 9001 -timeout 30000
-    host = "http://localhost"
-    port = "9001"
-    nlp = StanfordCoreNLP(host + ":" + port)
-    text = "Hello, My name is Melroy."
-    output = nlp.annotate(
-    text,
-    properties={
-        "outputFormat": "json",
-        "annotators": "depparse,ner,entitymentions,sentiment"
-    }
-    )
-    pprint(output)
+    tags_df=getTagsDataFrame(all_data,getTags())
+    results=pd.concat([features, tags_df], axis=1)
+
+    terms_df = getTermsDataFrame(all_data,getDictionary())
+    results=pd.concat([results, terms_df], axis=1)
+    
+    bigrams_df=getBigramsDataGrame(all_data,getBigrams(all_data))
+    result=pd.concat([results, bigrams_df], axis=1)
+    
+    result=pd.concat([results, labels], axis=1)
+
+    results.to_csv("results.csv")
+    #sentence = "My name is Milton."
+    #print(tag_sentence(sentence))
