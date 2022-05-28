@@ -95,3 +95,11 @@ https://www.khalidalnajjar.com/setup-use-stanford-corenlp-server-python/
     #}
     #)
     #print(output.sentences)
+
+    #requests.get("https://github.com/first20hours/google-10000-english/blob/master/20k.txt")
+    #requests.get("https://raw.githubusercontent.com/dwyl/english-words/master/words.txt")
+    #file1.text
+    # open("unigrams.txt","r")
+    # open("terms.txt","r")
+    # file1.readlines()
+    #file1=open("./input/unigrams.txt","r")

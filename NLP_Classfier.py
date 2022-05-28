@@ -57,20 +57,12 @@ def tag_sentence(sentence):
         regex+="|"
     nlp = StanfordCoreNLP('http://localhost', port=9002)
     stanford = nlp.parse(sentence)
-    #r"ROOT|S|INTJ|NP|VP
     tags = re.findall(regex, stanford)
     tags.remove('')
     nlp.close()
     return tags
 
 def getDictionary():
-    #requests.get("https://github.com/first20hours/google-10000-english/blob/master/20k.txt")
-    #requests.get("https://raw.githubusercontent.com/dwyl/english-words/master/words.txt")
-    #file1.text
-    # open("unigrams.txt","r")
-    # open("terms.txt","r")
-    # file1.readlines()
-    #file1=open("./input/unigrams.txt","r")
     file1 =open("./input/terms.txt","r")
     unigrams=[]
     for l in file1.readlines():
@@ -131,7 +123,6 @@ def getDates(filename):
 def getTagsDataFrame(data,pos_tags):
     data2=data.copy().drop('Headline',axis=1).drop('C/I',axis=1)
     stop_words = set(stopwords.words('english'))
-    #features = data['Headline']
     columns=[]
     all_terms=[]
     original_size=len(data['Headline'])
@@ -146,8 +137,6 @@ def getTagsDataFrame(data,pos_tags):
             tf = tags.count(p)
             ntf = tf/terms_num
             probs.append(ntf)
-            for t in terms:
-                all_terms.append(t)
         data2[p]=probs
     tags_df=data2[columns]
     return tags_df
@@ -155,10 +144,8 @@ def getTagsDataFrame(data,pos_tags):
 def getTermsDataFrame(data,unigrams):
     data2=data.copy().drop('Headline',axis=1).drop('C/I',axis=1)
     stop_words = set(stopwords.words('english'))
-    #features = data['Headline']
     columns=[]
     all_terms=[]
-    #columns.append('Headline')
     original_size=len(data['Headline'])
     for u in unigrams:
         probs=[]
@@ -171,18 +158,12 @@ def getTermsDataFrame(data,unigrams):
             ntf = tf/terms_num
             probs.append(ntf)
         data2[u]=probs
-    #all_terms = list(set(all_terms))
-    #for a in all_terms:
-    #    print(a)
-    #terms = list(set(terms))
     unigrams_df=data2[columns]
-    #tags_df = pd.DataFrame(features, index =features,columns =terms)
     return unigrams_df
 
-def getBigramsDataGrame(data,bigrams):
+def getBigramsDataFrame(data,bigrams):
     data2=data.copy().drop('Headline',axis=1).drop('C/I',axis=1)
     stop_words = set(stopwords.words('english'))
-    #features = data['Headline']
     columns=[]
     all_terms=[]
     original_size=len(data['Headline'])
@@ -199,10 +180,6 @@ def getBigramsDataGrame(data,bigrams):
             ntf = tf/terms_num
             probs.append(ntf)
         data2[b]=probs
-    #all_terms = list(set(all_terms))
-    #for a in all_terms:
-    #    print(a)
-    #terms = list(set(terms))
     bigrams_df=data2[columns]
     return bigrams_df
 
@@ -217,22 +194,20 @@ if __name__=="__main__":
     #print(all_data)
     label_names = ['Complete','Incomplete']
     labels = all_data['C/I']
-    features = all_data['Headline'] # POS Tag
+    headlines = all_data['Headline'] # POS Tag
     #https://www.geeksforgeeks.org/part-speech-tagging-stop-words-using-nltk-python/
     #https://stackabuse.com/python-for-nlp-parts-of-speech-tagging-and-named-entity-recognition/
     #https://www.nltk.org/book/ch05.html
 
     tags_df=getTagsDataFrame(all_data,getTags())
-    results=pd.concat([features, tags_df], axis=1)
+    results=pd.concat([headlines, tags_df], axis=1)
 
     terms_df = getTermsDataFrame(all_data,getDictionary())
     results=pd.concat([results, terms_df], axis=1)
     
-    bigrams_df=getBigramsDataGrame(all_data,getBigrams(all_data))
+    bigrams_df=getBigramsDataFrame(all_data,getBigrams(all_data))
     result=pd.concat([results, bigrams_df], axis=1)
     
     result=pd.concat([results, labels], axis=1)
 
-    results.to_csv("results.csv")
-    #sentence = "My name is Milton."
-    #print(tag_sentence(sentence))
+    #results.to_csv("results.csv")
