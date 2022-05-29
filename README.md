@@ -45,13 +45,17 @@ While I ran the code in an Ubuntu Sub-system, you should be able to run it in an
 
 ``conda env create --file NLP_Project.yml``
 
+You must then enter the environment, by activating it using the command below.
+ 
+ ``conda activate NLP_Project``
+ 
 You would then have to have TWO instances of your CLI.  In the first instance, you need to go into the stanford-core-nlp-4.4.0 folder and run the command below.
 
 ``java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -annotators "tokenize,ssplit,pos,lemma,parse,sentiment" -port 9002 -timeout 30000``
 
 The CoreNLP library is a server written in Java.  When you are running the command above, you are activating the server on port 9002, which will run the commands needed to parse the data.  You will also notice that the python3 script is calling to the same port to get the requested results from said commands.
 
-In the second instance, you can just run the python3 script in the parent directory.  Keep an eye on both instances, and you will notice that the server is taking all the data and parsing them. 
+In the second instance, you can just run the python3 script in the parent directory, but make sure you are in the NLP_Project environment before you do.  Otherwise, the script will not work.  Keep an eye on both instances, and you will notice that the server is taking all the data and parsing them. 
 
 ``python3 NLP_Classfier.py``
 
