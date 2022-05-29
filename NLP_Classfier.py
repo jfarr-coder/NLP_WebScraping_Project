@@ -206,8 +206,8 @@ if __name__=="__main__":
     results=pd.concat([results, terms_df], axis=1)
     
     bigrams_df=getBigramsDataFrame(all_data,getBigrams(all_data))
-    result=pd.concat([results, bigrams_df], axis=1)
+    results=pd.concat([results, bigrams_df], axis=1)
     
-    result=pd.concat([results, labels], axis=1)
+    results=pd.concat([results, labels], axis=1)
 
-    #results.to_csv("results.csv")
+    results.to_csv("results.csv")
