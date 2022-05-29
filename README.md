@@ -66,6 +66,6 @@ https://docs.google.com/presentation/d/12DIzklfy5YZ8C0i7BR2ZHtDY71VR2go1ITxGwr7w
 
 ## Progress
 
-To be honest, I was only able to go as far as calculating the Term Frequencies(TF) of each POS tag, Parser tag, unigram, and bigram.  The TFs were all outputted into the results.csv file.  
+To be honest, I was only able to go as far as calculating the Normalized Term Frequencies(NTF) of each POS tag, Parser tag, unigram, and bigram.  The NTFs were all outputted into the results.csv file.  
 
 As a result, you can do whatever you want with this repo and use the data however you want.  Best of Luck!
